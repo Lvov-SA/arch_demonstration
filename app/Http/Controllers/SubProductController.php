@@ -18,11 +18,11 @@ class SubProductController extends Controller
     public function index(Request $request, $productId)
     {
         $pipeline = new SubProductPipeline([
-            new NameFilter($request->input('name') ?? null),
             new ProductFilter($productId ?? null),
+            new NameFilter($request->input('name') ?? null),
         ]);
         $products = $pipeline->apply(SubProduct::query())->get();
-
+return
         return response()->json($products);
     }
 

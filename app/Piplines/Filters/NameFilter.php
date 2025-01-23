@@ -11,12 +11,11 @@ class NameFilter implements FilterInterface
     {
     }
 
-    public function apply(Builder $builder): Builder
+    public function apply(Builder $builder, $value): Builder
     {
-//        if (isset($this->name)) {
-//            return $builder->where('name', 'like', '%' . $this->name . '%');
-//        }
-        echo 'fuck u1';
-        return $builder;
+        if (isset($this->name)) {
+            $builder->where('name', 'like', '%' . $this->name . '%');
+        }
+        return $value($builder);
     }
 }

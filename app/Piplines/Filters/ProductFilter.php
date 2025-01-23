@@ -11,12 +11,11 @@ class ProductFilter implements FilterInterface
     {
     }
 
-    public function apply(Builder $builder): Builder
+    public function apply(Builder $builder, $value): Builder
     {
-//        if (isset($this->productId)) {
-//            return $builder->where('product_id', $this->productId);
-//        }
-        echo 'fuck u2';
-        return $builder;
+        if (isset($this->productId)) {
+            $builder->where('product_id', $this->productId);
+        }
+        return $value($builder);
     }
 }
