@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class IndexSubProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,18 +12,23 @@ class StoreProductRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
-        //return auth()->check();
     }
 
+    public function messages(): array
+    {
+        return [
+            'products.*' => 'не существующий продукт',
+        ];
+    }
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'products.*' => 'exists:products,id',
         ];
     }
 }

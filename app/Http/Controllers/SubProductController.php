@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexSubProductRequest;
+use App\Http\Requests\ShowSubProductRequest;
 use App\Http\Requests\StoreSubProductRequest;
 use App\Http\Requests\UpdateSubProductRequest;
 use App\Services\SubProductService;
@@ -18,7 +20,7 @@ class SubProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, $productId)
+    public function index(IndexSubProductRequest $request, $productId)
     {
         $parametersArray = array_merge($request->all(), ['product_id' => $productId]);
         $result = $this->service->index($parametersArray);
@@ -39,7 +41,7 @@ class SubProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $productId, int $subProductId)
+    public function show(ShowSubProductRequest $request, int $productId, int $subProductId)
     {
         $result = $this->service->show($subProductId);
 

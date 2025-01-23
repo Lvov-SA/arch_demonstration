@@ -8,7 +8,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::apiResource('products', ProductController::class);
-Route::apiResource('products.sub-products', SubProductController::class);
-Route::apiResource('files', FilesController::class);
