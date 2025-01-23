@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
 class ShowSubProductRequest extends FormRequest
@@ -46,4 +47,9 @@ class ShowSubProductRequest extends FormRequest
             'id' => 'exists:sub_products,id',
         ];
     }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator) {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
+    }
+
 }
