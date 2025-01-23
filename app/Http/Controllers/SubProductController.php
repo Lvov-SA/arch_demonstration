@@ -22,7 +22,7 @@ class SubProductController extends Controller
             new NameFilter($request->input('name') ?? null),
         ]);
         $products = $pipeline->apply(SubProduct::query())->get();
-return
+
         return response()->json($products);
     }
 
