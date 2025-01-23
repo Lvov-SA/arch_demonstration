@@ -4,34 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSubProductRequest;
 use App\Http\Requests\UpdateSubProductRequest;
-use App\Models\SubProduct;
-use App\Piplines\Filters\NameFilter;
-use App\Piplines\Filters\ProductFilter;
-use App\Piplines\SubProductPipeline;
+use App\Services\SubProductService;
 use Illuminate\Http\Request;
 
 class SubProductController extends Controller
 {
+    public function __construct(
+        protected SubProductService $service
+    )
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request, $productId)
     {
-        $pipeline = new SubProductPipeline([
-            new ProductFilter($productId ?? null),
-            new NameFilter($request->input('name') ?? null),
-        ]);
-        $products = $pipeline->apply(SubProduct::query())->get();
+        $parametersArray = array_merge($request->all(), ['product_id' => $productId]);
+        $result = $this->service->index($parametersArray);
 
-        return response()->json($products);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($result);
     }
 
     /**
@@ -39,38 +31,43 @@ class SubProductController extends Controller
      */
     public function store(StoreSubProductRequest $request)
     {
-        //
+        $result = $this->service->store($request->all());
+
+        return response()->json($result);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(SubProduct $subProduct)
+    public function show(int $productId, int $subProductId)
     {
-        //
-    }
+        $result = $this->service->show($subProductId);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SubProduct $subProduct)
-    {
-        //
+        return response()->json($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSubProductRequest $request, SubProduct $subProduct)
+    public function update(UpdateSubProductRequest $request, int $productId, int $subProductId)
     {
-        //
+        $updateArray = array_merge(
+            $request->all(),
+            ['id' => $subProductId],
+        );
+
+        $result = $this->service->update($updateArray);
+
+        return response()->json($result);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SubProduct $subProduct)
+    public function destroy(int $productId, int $subProductId)
     {
-        //
+        $this->service->destroy($subProductId);
+
+        return response()->json()->setStatusCode(200);
     }
 }
