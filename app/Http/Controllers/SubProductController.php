@@ -5,15 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSubProductRequest;
 use App\Http\Requests\UpdateSubProductRequest;
 use App\Models\SubProduct;
+use App\Piplines\Filters\NameFilter;
+use App\Piplines\Filters\ProductFilter;
+use App\Piplines\SubProductPipeline;
+use Illuminate\Http\Request;
 
 class SubProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, $productId)
     {
-        //
+        $pipeline = new SubProductPipeline([
+            new NameFilter($request->input('name') ?? null),
+            new ProductFilter($productId ?? null),
+        ]);
+        $products = $pipeline->apply(SubProduct::query())->get();
+
+        return response()->json($products);
     }
 
     /**

@@ -5,15 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Piplines\Filters\NameFilter;
+use App\Piplines\ProductPipeline;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $pipeline = new ProductPipeline([
+            new NameFilter($request->input('name') ?? null),
+        ]);
+        $products = $pipeline->apply(Product::query())->get();
+
+        return response()->json($products);
     }
 
     /**
