@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateSubProductRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateSubProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,5 +25,9 @@ class UpdateSubProductRequest extends FormRequest
         return [
             //
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator) {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }

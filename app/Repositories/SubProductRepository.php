@@ -25,8 +25,9 @@ class SubProductRepository
      */
     public function store(array $subProductArray): array
     {
-        $newRecordId = SubProduct::query()->insertGetId($subProductArray);
-        $result = SubProduct::query()->find($newRecordId)->toArray();
+        ;
+        //$newRecordId = SubProduct::query()->insertGetId($subProductArray);
+        $result = SubProduct::query()->create($subProductArray)->toArray();
 
         return $result;
     }
