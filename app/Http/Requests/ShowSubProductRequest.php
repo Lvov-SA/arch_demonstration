@@ -40,7 +40,6 @@ class ShowSubProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        //dd($this->input());
         return [
 
             'product_id' => 'exists:products,id',

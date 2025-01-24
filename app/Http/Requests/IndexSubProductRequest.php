@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class IndexSubProductRequest extends FormRequest
 {
@@ -14,12 +15,21 @@ class IndexSubProductRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+
+        $this->merge([
+            'product_id' => $this->route('product'),
+        ]);
+    }
+
     public function messages(): array
     {
         return [
-            'products.*' => 'не существующий продукт',
+            'product_id' => 'не существующий продукт',
         ];
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,7 +38,11 @@ class IndexSubProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'products.*' => 'exists:products,id',
+            'product_id' => 'exists:products,id',
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator) {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }

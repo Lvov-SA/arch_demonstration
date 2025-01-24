@@ -10,8 +10,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::group(['middleware' => ['auth:sanctum']], static function () {
+//Route::group(['middleware' => ['auth:sanctum']], static function () {
     Route::apiResource('products', ProductController::class);
     Route::apiResource('products.sub-products', SubProductController::class);
     Route::apiResource('files', FilesController::class);
-});
+//});

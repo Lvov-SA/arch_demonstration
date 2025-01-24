@@ -20,10 +20,9 @@ class SubProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexSubProductRequest $request, $productId)
+    public function index(IndexSubProductRequest $request)
     {
-        $parametersArray = array_merge($request->all(), ['product_id' => $productId]);
-        $result = $this->service->index($parametersArray);
+        $result = $this->service->index($request->all());
 
         return response()->json($result);
     }
@@ -43,7 +42,7 @@ class SubProductController extends Controller
      */
     public function show(ShowSubProductRequest $request, int $productId, int $subProductId)
     {
-        $result = $this->service->show($subProductId);
+        $result = $this->service->show($request->input('id'));
 
         return response()->json($result);
     }
@@ -66,9 +65,9 @@ class SubProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $productId, int $subProductId)
+    public function destroy(ShowSubProductRequest $request)
     {
-        $this->service->destroy($subProductId);
+        $this->service->destroy($request->input('id'));
 
         return response()->json()->setStatusCode(200);
     }
