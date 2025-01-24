@@ -67,8 +67,10 @@ class SubProductService
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id): void
+    public function destroy(int $id): bool|null
     {
-        $this->repository->destroy($id);
+        $result = $this->repository->destroy($id);
+
+        return $result;
     }
 }

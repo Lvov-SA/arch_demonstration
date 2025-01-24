@@ -67,8 +67,8 @@ class SubProductController extends Controller
      */
     public function destroy(ShowSubProductRequest $request)
     {
-        $this->service->destroy($request->input('id'));
+        $result = $this->service->destroy($request->input('id'));
 
-        return response()->json()->setStatusCode(200);
+        return response()->json()->setStatusCode($result ? 200 : 400);
     }
 }

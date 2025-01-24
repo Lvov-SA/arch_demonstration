@@ -60,8 +60,10 @@ class SubProductRepository
      * @param int $id
      * @return void
      */
-    public function destroy(int $id): void
+    public function destroy(int $id): bool|null
     {
         $result = SubProduct::query()->find($id)->delete();
+
+        return $result;
     }
 }
